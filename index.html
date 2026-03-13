@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CafeSeeders — SoCal's #1 Cafe Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────
+   DESIGN SYSTEM
+───────────────────────────────────── */
+:root {
+  /* Brand Blues */
+  --blue-950: #05122B;
+  --blue-900: #0B1F4A;
+  --blue-800: #122B68;
+  --blue-700: #1A3D8F;
+  --blue-600: #1F51C5;
+  --blue-500: #2E68E6;
+  --blue-400: #5B8FF9;
+  --blue-200: #BAD1FC;
+  --blue-100: #E0ECFF;
+  --blue-50:  #F0F6FF;
+
+  /* Neutrals — warm-tinted for readability */
+  --gray-950: #0C0F17;
+  --gray-800: #1A1F2E;
+  --gray-700: #2D3348;
+  --gray-600: #44506B;
+  --gray-500: #64718E;
+  --gray-400: #8A96AF;
+  --gray-300: #B4BDCF;
+  --gray-200: #D8DDE8;
+  --gray-100: #EDF0F6;
+  --gray-50:  #F6F8FC;
+  --white:    #FFFFFF;
+
+  /* Accents */
+  --teal:      #0E9E8E;
+  --teal-lt:   #D0F4F0;
+  --amber:     #D97706;
+  --amber-lt:  #FEF3C7;
+  --red:       #DC2626;
+  --red-lt:    #FEE2E2;
+  --green:     #16A34A;
+  --green-lt:  #DCFCE7;
+
+  /* Typography scale */
+  --fs-xs:   .72rem;
+  --fs-sm:   .85rem;
+  --fs-base: .95rem;
+  --fs-md:   1.05rem;
+  --fs-lg:   1.22rem;
+  --fs-xl:   1.5rem;
+  --fs-2xl:  1.9rem;
+  --fs-3xl:  2.5rem;
+  --fs-hero: clamp(2.8rem, 5.8vw, 4.8rem);
+
+  /* Spacing */
+  --r:    16px;
+  --r-lg: 22px;
+  --r-xl: 28px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 4px rgba(12,15,23,.06);
+  --shadow-sm: 0 2px 8px rgba(12,15,23,.08);
+  --shadow-md: 0 6px 24px rgba(12,15,23,.1);
+  --shadow-lg: 0 16px 48px rgba(12,15,23,.13);
+  --shadow-xl: 0 28px 72px rgba(12,15,23,.16);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: var(--fs-base); color: var(--gray-800); background: var(--white); overflow-x: hidden; line-height: 1.6; }
+
+/* ─────────────────────────────────────
+   CUSTOM CURSOR
+───────────────────────────────────── */
+#cursor-dot  { width: 6px; height: 6px; background: var(--blue-500); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: transform .08s; }
+#cursor-ring { width: 28px; height: 28px; border: 1.5px solid var(--blue-400); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: .5; transition: all .15s ease; }
+
+/* ─────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────── */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 64px;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 52px;
+  transition: height .3s, box-shadow .3s;
+}
+#nav.scrolled { height: 56px; box-shadow: var(--shadow-sm); }
+
+.nav-logo {
+  font-family: 'Playfair Display', serif; font-size: 1.32rem; font-weight: 800;
+  color: var(--gray-950); display: flex; align-items: center; gap: 9px;
+  cursor: pointer; text-decoration: none; flex-shrink: 0; letter-spacing: -.01em;
+}
+.nav-logo span { color: var(--blue-600); }
+
+.nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+.nav-links a {
+  font-size: var(--fs-sm); font-weight: 500; color: var(--gray-600);
+  padding: 7px 14px; border-radius: 9px; cursor: pointer; text-decoration: none;
+  transition: color .18s, background .18s;
+}
+.nav-links a:hover { color: var(--blue-600); background: var(--blue-50); }
+
+.nav-actions { display: flex; gap: 8px; align-items: center; }
+
+.btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 18px; border-radius: 10px; font-size: var(--fs-sm); font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all .2s; border: none; }
+.btn-ghost { background: transparent; border: 1.5px solid var(--gray-200); color: var(--gray-700); }
+.btn-ghost:hover { border-color: var(--blue-500); color: var(--blue-600); background: var(--blue-50); }
+.btn-primary { background: var(--blue-600); color: var(--white); box-shadow: 0 2px 8px rgba(31,81,197,.25); }
+.btn-primary:hover { background: var(--blue-700); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(31,81,197,.35); }
+.btn-outline { background: transparent; border: 1.5px solid var(--blue-200); color: var(--blue-600); }
+.btn-outline:hover { background: var(--blue-50); border-color: var(--blue-500); }
+
+/* ─────────────────────────────────────
+   HERO
+───────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  padding-top: 64px;
+  background: linear-gradient(155deg, var(--blue-950) 0%, var(--blue-900) 30%, var(--blue-800) 58%, #1E4BA8 78%, #2861CC 92%, #3B78E8 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* subtle grid */
+.hero-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+/* light orbs */
+.hero-orb { position: absolute; border-radius: 50%; pointer-events: none; }
+.hero-orb-1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(91,143,249,.18) 0%, transparent 65%); top: -220px; right: -180px; animation: orb 16s ease-in-out infinite; }
+.hero-orb-2 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(14,158,142,.12) 0%, transparent 65%); bottom: -100px; left: -80px; animation: orb 20s ease-in-out infinite reverse; }
+@keyframes orb { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-25px)} }
+
+/* bottom wave */
+.hero-wave { position: absolute; bottom: 0; left: 0; right: 0; line-height: 0; }
+.hero-wave svg { display: block; width: 100%; }
+
+/* floating stat pills */
+.hero-float {
+  position: absolute;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px; padding: 14px 18px;
+  pointer-events: none; animation: float-bob 7s ease-in-out infinite;
+}
+.hf-1 { top: 22%; left: 3.5%; animation-delay: 0s; }
+.hf-2 { top: 58%; right: 3.5%; animation-delay: 3.5s; }
+.hf-3 { bottom: 22%; left: 6%; animation-delay: 7s; }
+@keyframes float-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.hf-label { font-size: var(--fs-xs); font-weight: 600; color: rgba(255,255,255,.55); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; }
+.hf-value { font-size: 1.05rem; font-weight: 700; color: var(--white); }
+.hf-delta { font-size: var(--fs-xs); color: rgba(255,255,255,.45); margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+.hf-up { color: #5BE8C8; font-weight: 700; }
+
+/* hero content */
+.hero-content { position: relative; z-index: 10; text-align: center; padding: 60px 32px 110px; max-width: 860px; width: 100%; }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 100px; padding: 6px 18px; margin-bottom: 26px;
+  font-size: var(--fs-xs); font-weight: 700; color: rgba(255,255,255,.85);
+  letter-spacing: .08em; text-transform: uppercase;
+  opacity: 0; animation: fade-up .7s .2s forwards;
+}
+.eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: #5BE8C8; animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+.hero-h1 {
+  font-family: 'Playfair Display', serif; font-size: var(--fs-hero);
+  font-weight: 800; line-height: 1.06; color: var(--white); letter-spacing: -.02em;
+  margin-bottom: 10px; opacity: 0; animation: fade-up .8s .35s forwards;
+}
+.hero-h1 em { color: #7EC8F8; font-style: italic; }
+.hero-h1 .sub { display: block; color: rgba(255,255,255,.45); font-size: .65em; margin-top: 8px; }
+
+.hero-desc {
+  font-size: var(--fs-md); color: rgba(255,255,255,.62); max-width: 480px;
+  margin: 0 auto 42px; line-height: 1.8;
+  opacity: 0; animation: fade-up .8s .5s forwards;
+}
+
+/* search bar */
+.hero-search {
+  display: flex; background: var(--white); border-radius: 14px; overflow: hidden;
+  max-width: 660px; margin: 0 auto 48px;
+  box-shadow: 0 12px 48px rgba(0,0,0,.28), 0 2px 8px rgba(0,0,0,.12);
+  opacity: 0; animation: fade-up .8s .65s forwards;
+}
+.hs-select {
+  background: var(--blue-50); border: none; border-right: 1.5px solid var(--gray-200);
+  color: var(--blue-700); font-family: 'Inter', sans-serif; font-size: var(--fs-sm);
+  font-weight: 600; padding: 0 18px; cursor: pointer; outline: none;
+  min-width: 130px; appearance: none;
+}
+.hs-input {
+  flex: 1; background: transparent; border: none; color: var(--gray-800);
+  font-family: 'Inter', sans-serif; font-size: var(--fs-sm); padding: 17px 18px; outline: none;
+}
+.hs-input::placeholder { color: var(--gray-400); }
+.hs-btn {
+  background: var(--blue-600); border: none; padding: 0 28px; color: var(--white);
+  font-size: var(--fs-sm); font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: background .2s; letter-spacing: .01em;
+}
+.hs-btn:hover { background: var(--blue-700); }
+
+/* stats row */
+.hero-stats {
+  display: flex; justify-content: center; gap: 0;
+  opacity: 0; animation: fade-up .8s .8s forwards;
+}
+.hero-stat { padding: 0 32px; text-align: center; border-right: 1px solid rgba(255,255,255,.15); }
+.hero-stat:last-child { border-right: none; }
+.hs-num { font-family: 'Playfair Display', serif; font-size: var(--fs-2xl); font-weight: 800; color: var(--white); display: block; line-height: 1; }
+.hs-lbl { font-size: var(--fs-xs); color: rgba(255,255,255,.45); letter-spacing: .06em; text-transform: uppercase; display: block; margin-top: 5px; }
+
+/* scroll indicator */
+.hero-scroll { position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 6px; color: rgba(255,255,255,.3); font-size: var(--fs-xs); letter-spacing: .1em; text-transform: uppercase; animation: scroll-hint 3s ease-in-out infinite; }
+.hero-scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, rgba(255,255,255,.4), transparent); }
+@keyframes scroll-hint { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+@keyframes fade-up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─────────────────────────────────────
+   SHARED SECTION STYLES
+───────────────────────────────────── */
+.section { padding: 96px 52px; }
+.section-wrap { max-width: 1180px; margin: 0 auto; }
+.section-bg-white { background: var(--white); }
+.section-bg-gray  { background: var(--gray-50); }
+.section-bg-blue  { background: var(--blue-50); }
+
+.eyebrow-tag {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: var(--fs-xs); font-weight: 700; color: var(--blue-600);
+  letter-spacing: .09em; text-transform: uppercase; margin-bottom: 12px;
+}
+.eyebrow-tag::before { content: ''; width: 16px; height: 2px; background: var(--blue-500); border-radius: 2px; display: block; }
+.section-h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 3.2vw, 2.7rem); font-weight: 800; color: var(--gray-950); line-height: 1.15; margin-bottom: 12px; letter-spacing: -.01em; }
+.section-desc { font-size: var(--fs-base); color: var(--gray-500); max-width: 440px; line-height: 1.75; margin-bottom: 52px; }
+.centered { text-align: center; }
+.centered .eyebrow-tag { justify-content: center; }
+.centered .eyebrow-tag::before { display: none; }
+.centered .section-desc { margin-left: auto; margin-right: auto; }
+
+/* Reveal animation */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal.d1 { transition-delay: .1s; } .reveal.d2 { transition-delay: .2s; }
+.reveal.d3 { transition-delay: .3s; } .reveal.d4 { transition-delay: .4s; }
+.reveal.d5 { transition-delay: .5s; }
+
+/* ─────────────────────────────────────
+   CATEGORIES
+───────────────────────────────────── */
+.cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.cat-card {
+  background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--r-lg);
+  padding: 28px 18px; text-align: center; cursor: pointer;
+  transition: all .28s cubic-bezier(.34,1.56,.64,1); position: relative; overflow: hidden;
+}
+.cat-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--blue-500); transform: scaleX(0); transition: transform .28s; transform-origin: center; border-radius: 2px; }
+.cat-card:hover { transform: translateY(-8px); border-color: var(--blue-200); box-shadow: var(--shadow-lg); }
+.cat-card:hover::after { transform: scaleX(1); }
+.cat-icon { font-size: 2.4rem; display: block; margin-bottom: 12px; transition: transform .28s; }
+.cat-card:hover .cat-icon { transform: scale(1.1) rotate(-5deg); }
+.cat-name { font-size: var(--fs-sm); font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+.cat-sub  { font-size: var(--fs-xs); color: var(--gray-400); }
+
+/* ─────────────────────────────────────
+   MARKETPLACE
+───────────────────────────────────── */
+.filter-row { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+.chip {
+  padding: 7px 16px; border-radius: 100px; border: 1.5px solid var(--gray-200);
+  color: var(--gray-500); font-size: var(--fs-xs); font-weight: 600;
+  cursor: pointer; background: var(--white); font-family: 'Inter', sans-serif; transition: all .18s;
+}
+.chip:hover { border-color: var(--blue-400); color: var(--blue-600); }
+.chip.active { background: var(--blue-600); border-color: var(--blue-600); color: var(--white); }
+
+.listings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.listing-card {
+  background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--r-lg);
+  overflow: hidden; cursor: pointer; transition: all .28s;
+}
+.listing-card:hover { transform: translateY(-6px); border-color: var(--blue-200); box-shadow: var(--shadow-xl); }
+.listing-img {
+  height: 176px; display: flex; align-items: center; justify-content: center;
+  font-size: 3.8rem; position: relative; overflow: hidden; transition: transform .5s;
+}
+.listing-card:hover .listing-img { transform: scale(1.04); }
+.listing-badge {
+  position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 8px;
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+}
+.badge-premium { background: var(--amber); color: var(--white); }
+.badge-new     { background: var(--teal); color: var(--white); }
+.badge-feat    { background: var(--blue-600); color: var(--white); }
+
+.listing-body { padding: 20px; }
+.listing-title { font-size: var(--fs-sm); font-weight: 700; color: var(--gray-900, var(--gray-950)); margin-bottom: 4px; line-height: 1.35; }
+.listing-loc   { font-size: var(--fs-xs); color: var(--gray-400); margin-bottom: 14px; }
+.listing-price { font-family: 'Playfair Display', serif; font-size: var(--fs-xl); font-weight: 800; color: var(--blue-600); margin-bottom: 12px; }
+.listing-tags  { display: flex; gap: 6px; flex-wrap: wrap; }
+.listing-tag   { padding: 3px 10px; background: var(--blue-50); border-radius: 7px; font-size: var(--fs-xs); font-weight: 600; color: var(--blue-600); }
+
+.view-all-btn {
+  display: block; text-align: center; margin: 44px auto 0; max-width: 190px;
+  padding: 13px 28px; border-radius: 11px; border: 2px solid var(--blue-500);
+  color: var(--blue-600); font-size: var(--fs-sm); font-weight: 700;
+  cursor: pointer; transition: all .22s; background: transparent; font-family: 'Inter', sans-serif;
+}
+.view-all-btn:hover { background: var(--blue-600); color: var(--white); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* ─────────────────────────────────────
+   HOW IT WORKS
+───────────────────────────────────── */
+.how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.how-visual {
+  height: 440px; background: linear-gradient(145deg, var(--blue-50) 0%, var(--blue-100) 100%);
+  border-radius: var(--r-xl); display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden; border: 1.5px solid var(--blue-100);
+}
+.how-visual-orb {
+  position: absolute; width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(31,81,197,.14) 0%, transparent 65%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  animation: vorb 4s ease-in-out infinite;
+}
+@keyframes vorb { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7} 50%{transform:translate(-50%,-50%) scale(1.18);opacity:.35} }
+.how-visual-inner { position: relative; z-index: 1; text-align: center; padding: 20px; }
+.how-visual-icon { font-size: 5rem; display: block; margin-bottom: 16px; }
+.how-visual-title { font-family: 'Playfair Display', serif; font-size: var(--fs-lg); font-weight: 800; color: var(--gray-800); }
+.how-visual-sub { font-size: var(--fs-xs); color: var(--gray-500); margin-top: 6px; }
+
+.step-list { display: flex; flex-direction: column; gap: 6px; }
+.step-item {
+  display: flex; gap: 16px; align-items: flex-start; padding: 15px 18px;
+  border-radius: 14px; border: 1.5px solid transparent; cursor: pointer; transition: all .25s;
+}
+.step-item:hover, .step-item.active { background: var(--white); border-color: var(--gray-200); box-shadow: var(--shadow-sm); }
+.step-num {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--blue-50); border: 1.5px solid var(--blue-200);
+  display: flex; align-items: center; justify-content: center; font-size: var(--fs-xs);
+  font-weight: 700; color: var(--blue-600); flex-shrink: 0; transition: all .25s;
+}
+.step-item.active .step-num { background: var(--blue-600); border-color: var(--blue-600); color: var(--white); }
+.step-text-title { font-size: var(--fs-sm); font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+.step-text-desc  { font-size: var(--fs-xs); color: var(--gray-500); line-height: 1.6; }
+
+/* ─────────────────────────────────────
+   REVENUE
+───────────────────────────────────── */
+.revenue-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 36px; }
+.revenue-card {
+  background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--r-lg);
+  padding: 26px 24px; cursor: pointer; transition: all .25s; position: relative; overflow: hidden;
+}
+.revenue-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--blue-600), var(--teal));
+  transform: scaleX(0); transition: transform .3s; transform-origin: left;
+}
+.revenue-card:hover::before { transform: scaleX(1); }
+.revenue-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.rev-icon  { font-size: 1.9rem; margin-bottom: 14px; display: block; }
+.rev-title { font-size: var(--fs-sm); font-weight: 700; color: var(--gray-800); margin-bottom: 7px; }
+.rev-desc  { font-size: var(--fs-xs); color: var(--gray-500); line-height: 1.7; margin-bottom: 16px; }
+.rev-amount { font-family: 'Playfair Display', serif; font-size: var(--fs-xl); font-weight: 800; color: var(--blue-600); }
+.rev-amount span { font-size: var(--fs-xs); font-weight: 500; color: var(--gray-400); font-family: 'Inter', sans-serif; }
+
+.revenue-summary {
+  background: linear-gradient(135deg, var(--blue-700) 0%, var(--blue-600) 100%);
+  border-radius: var(--r-xl); padding: 38px 48px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;
+  box-shadow: var(--shadow-lg);
+}
+.rs-label { font-size: var(--fs-xs); font-weight: 600; color: rgba(255,255,255,.6); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+.rs-number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 800; color: var(--white); line-height: 1; }
+.rs-sub { font-size: var(--fs-xs); color: rgba(255,255,255,.5); margin-top: 5px; }
+.rs-note { font-size: var(--fs-xs); color: rgba(255,255,255,.6); max-width: 300px; line-height: 1.7; }
+.btn-white { background: var(--white); color: var(--blue-700); font-weight: 700; box-shadow: var(--shadow-sm); }
+.btn-white:hover { background: var(--blue-50); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+/* ─────────────────────────────────────
+   TRENDS
+───────────────────────────────────── */
+.trends-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: auto auto; gap: 16px;
+}
+.trend-card {
+  background: var(--white); border-radius: var(--r-lg); overflow: hidden;
+  cursor: pointer; transition: all .25s; border: 1.5px solid var(--gray-200);
+}
+.trend-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--gray-300); }
+.trend-card.featured { grid-row: span 2; }
+.trend-img { display: flex; align-items: center; justify-content: center; font-size: 3.8rem; height: 186px; }
+.trend-card.featured .trend-img { height: 272px; }
+.trend-body { padding: 18px; }
+.trend-cat { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 7px; }
+.trend-title { font-size: var(--fs-sm); font-weight: 700; color: var(--gray-800); line-height: 1.4; margin-bottom: 9px; }
+.trend-card.featured .trend-title { font-size: var(--fs-md); }
+.trend-meta { font-size: var(--fs-xs); color: var(--gray-400); display: flex; gap: 14px; }
+
+/* ─────────────────────────────────────
+   VENDORS
+───────────────────────────────────── */
+.vendors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.vendor-card {
+  background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--r-lg);
+  padding: 22px; cursor: pointer; transition: all .25s; position: relative;
+}
+.vendor-card.premium { border-color: var(--blue-200); background: var(--blue-50); }
+.vendor-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--blue-400); }
+.vendor-badge {
+  position: absolute; top: -8px; right: 12px; background: var(--blue-600); color: var(--white);
+  font-size: var(--fs-xs); font-weight: 700; padding: 3px 10px; border-radius: 100px;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.vendor-icon { font-size: 1.75rem; margin-bottom: 11px; display: block; }
+.vendor-name { font-size: var(--fs-sm); font-weight: 700; color: var(--gray-800); margin-bottom: 3px; }
+.vendor-cat  { font-size: var(--fs-xs); color: var(--gray-400); margin-bottom: 9px; }
+.vendor-stars { color: var(--amber); font-size: var(--fs-xs); }
+
+/* ─────────────────────────────────────
+   PRICING
+───────────────────────────────────── */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1040px; margin: 0 auto; align-items: start; }
+.pricing-card {
+  background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--r-xl);
+  padding: 34px 28px; transition: all .25s; cursor: pointer; position: relative; overflow: hidden;
+}
+.pricing-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.pricing-card.popular { border-color: var(--blue-500); box-shadow: var(--shadow-xl); transform: translateY(-10px); }
+.popular-badge {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  background: var(--blue-600); color: var(--white); font-size: var(--fs-xs);
+  font-weight: 700; padding: 5px 18px; border-radius: 0 0 12px 12px; white-space: nowrap;
+}
+.pricing-tier   { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue-600); margin-bottom: 10px; }
+.pricing-amount { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 800; color: var(--gray-950); line-height: 1; margin-bottom: 4px; }
+.pricing-period { font-size: var(--fs-xs); color: var(--gray-400); margin-bottom: 22px; }
+.pricing-features { list-style: none; margin-bottom: 26px; }
+.pricing-features li { display: flex; align-items: flex-start; gap: 10px; font-size: var(--fs-sm); color: var(--gray-600); padding: 8px 0; border-bottom: 1px solid var(--gray-100); }
+.pricing-features li:last-child { border-bottom: none; }
+.pf-check { color: var(--teal); font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+.pricing-btn { width: 100%; padding: 13px; border-radius: 10px; font-size: var(--fs-sm); font-weight: 700; cursor: pointer; transition: all .22s; border: none; font-family: 'Inter', sans-serif; background: var(--blue-600); color: var(--white); }
+.pricing-btn:hover { background: var(--blue-700); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(31,81,197,.3); }
+.pricing-btn-outline { background: transparent; border: 1.5px solid var(--gray-200); color: var(--gray-700); }
+.pricing-btn-outline:hover { border-color: var(--blue-500); color: var(--blue-600); background: var(--blue-50); box-shadow: none; transform: none; }
+
+/* ─────────────────────────────────────
+   NEWSLETTER BAND
+───────────────────────────────────── */
+.newsletter-band {
+  background: linear-gradient(135deg, var(--blue-950) 0%, var(--blue-800) 55%, #1E5BC8 100%);
+  padding: 80px 52px; text-align: center; position: relative; overflow: hidden;
+}
+.newsletter-band::before { content: ''; position: absolute; top: -100px; left: -100px; width: 380px; height: 380px; background: rgba(255,255,255,.04); border-radius: 50%; }
+.newsletter-band::after  { content: ''; position: absolute; bottom: -80px; right: -60px; width: 280px; height: 280px; background: rgba(91,143,249,.06); border-radius: 50%; }
+.nl-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; color: var(--white); margin-bottom: 10px; position: relative; }
+.nl-sub   { font-size: var(--fs-base); color: rgba(255,255,255,.55); margin-bottom: 34px; position: relative; }
+.nl-form  { display: flex; gap: 10px; max-width: 440px; margin: 0 auto; position: relative; }
+.nl-input {
+  flex: 1; padding: 14px 17px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,.2);
+  font-size: var(--fs-sm); font-family: 'Inter', sans-serif; outline: none;
+  background: rgba(255,255,255,.12); color: var(--white);
+}
+.nl-input::placeholder { color: rgba(255,255,255,.4); }
+.nl-input:focus { background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.45); }
+.nl-submit { padding: 14px 22px; background: var(--white); color: var(--blue-700); border: none; border-radius: 10px; font-size: var(--fs-sm); font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: all .2s; white-space: nowrap; }
+.nl-submit:hover { background: var(--blue-50); transform: translateY(-1px); }
+
+/* ─────────────────────────────────────
+   FOOTER
+───────────────────────────────────── */
+footer {
+  background: var(--gray-950); padding: 72px 52px 36px;
+  border-top: 3px solid var(--blue-600);
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 52px; margin-bottom: 52px; }
+.footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 800; color: var(--white); margin-bottom: 10px; }
+.footer-brand-name span { color: var(--blue-400); }
+.footer-brand-desc { font-size: var(--fs-xs); color: rgba(255,255,255,.35); line-height: 1.75; margin-bottom: 20px; max-width: 265px; }
+.footer-lic-badges { display: flex; gap: 8px; }
+.lic-badge { padding: 5px 11px; background: rgba(31,81,197,.15); border: 1px solid rgba(31,81,197,.28); border-radius: 7px; font-size: var(--fs-xs); font-weight: 700; color: var(--blue-400); }
+.footer-col-title { font-size: var(--fs-xs); font-weight: 700; color: rgba(255,255,255,.7); margin-bottom: 16px; letter-spacing: .06em; text-transform: uppercase; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a { font-size: var(--fs-xs); color: rgba(255,255,255,.35); text-decoration: none; cursor: pointer; transition: color .18s; }
+.footer-links a:hover { color: var(--blue-400); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.07); padding-top: 28px; display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.footer-copy { font-size: var(--fs-xs); color: rgba(255,255,255,.2); line-height: 1.8; max-width: 640px; }
+.footer-agent { text-align: right; flex-shrink: 0; }
+.footer-agent-name { font-size: var(--fs-sm); font-weight: 700; color: rgba(255,255,255,.65); margin-bottom: 3px; }
+.footer-agent-lic  { font-size: var(--fs-xs); color: rgba(255,255,255,.25); }
+
+/* ─────────────────────────────────────
+   MODALS
+───────────────────────────────────── */
+.overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(12,15,23,.55); backdrop-filter: blur(6px);
+  z-index: 800; align-items: center; justify-content: center; padding: 20px;
+}
+.overlay.open { display: flex; }
+.modal {
+  background: var(--white); border-radius: var(--r-xl); max-width: 520px; width: 100%;
+  padding: 44px; position: relative; max-height: 90vh; overflow-y: auto;
+  animation: modal-enter .28s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: var(--shadow-xl);
+}
+@keyframes modal-enter { from{opacity:0;transform:scale(.92) translateY(14px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.modal-close {
+  position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--gray-100); border: none; font-size: .9rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: var(--gray-600);
+  transition: background .18s;
+}
+.modal-close:hover { background: var(--gray-200); }
+.modal-icon  { font-size: 2.6rem; display: block; margin-bottom: 14px; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: var(--fs-2xl); font-weight: 800; color: var(--gray-950); margin-bottom: 6px; }
+.modal-sub   { font-size: var(--fs-sm); color: var(--gray-500); margin-bottom: 24px; line-height: 1.65; }
+.form-group  { margin-bottom: 14px; }
+.form-label  { display: block; font-size: var(--fs-xs); font-weight: 700; color: var(--gray-700); margin-bottom: 6px; letter-spacing: .02em; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 11px 14px; border-radius: 9px; border: 1.5px solid var(--gray-200);
+  background: var(--gray-50); font-family: 'Inter', sans-serif; font-size: var(--fs-sm);
+  color: var(--gray-800); outline: none; transition: border-color .18s, background .18s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--blue-500); background: var(--white);
+  box-shadow: 0 0 0 3px rgba(31,81,197,.08);
+}
+.form-textarea { resize: vertical; min-height: 90px; }
+.form-submit {
+  width: 100%; padding: 13px; background: var(--blue-600); color: var(--white); border: none;
+  border-radius: 10px; font-size: var(--fs-sm); font-weight: 700; cursor: pointer;
+  font-family: 'Inter', sans-serif; margin-top: 6px; transition: all .22s;
+}
+.form-submit:hover { background: var(--blue-700); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(31,81,197,.3); }
+.tab-nav { display: flex; gap: 3px; background: var(--gray-100); border-radius: 9px; padding: 3px; margin-bottom: 16px; }
+.tab-btn { flex: 1; padding: 7px 10px; border-radius: 7px; border: none; background: transparent; font-size: var(--fs-xs); font-weight: 600; color: var(--gray-500); cursor: pointer; transition: all .2s; font-family: 'Inter', sans-serif; }
+.tab-btn.active { background: var(--white); color: var(--gray-800); box-shadow: var(--shadow-xs); }
+.listing-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.ld-item { background: var(--blue-50); border-radius: 10px; padding: 13px 15px; }
+.ld-label { font-size: var(--fs-xs); font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .05em; }
+.ld-value { font-size: 1rem; font-weight: 800; color: var(--gray-800); margin-top: 3px; }
+.info-box { background: var(--blue-50); border-radius: 10px; padding: 13px 15px; font-size: var(--fs-xs); line-height: 1.7; color: var(--gray-600); margin-bottom: 16px; }
+.plan-option { padding: 14px; border: 1.5px solid var(--gray-200); border-radius: 10px; cursor: pointer; margin-bottom: 9px; transition: all .18s; }
+.plan-option:hover { border-color: var(--blue-400); }
+.plan-option.selected { border-color: var(--blue-500); background: var(--blue-50); }
+.plan-option-title { font-size: var(--fs-sm); font-weight: 700; color: var(--gray-800); }
+.plan-option-desc  { font-size: var(--fs-xs); color: var(--gray-400); margin-top: 3px; }
+.modal-divider { text-align: center; font-size: var(--fs-xs); color: var(--gray-400); margin: 12px 0; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; }
+
+/* ─────────────────────────────────────
+   TOAST
+───────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9000;
+  background: var(--gray-950); color: var(--white);
+  padding: 13px 20px; border-radius: 12px; border-left: 4px solid var(--blue-500);
+  font-size: var(--fs-sm); font-weight: 600; display: flex; align-items: center; gap: 9px;
+  max-width: 300px; box-shadow: var(--shadow-xl);
+  transform: translateY(80px); opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* ─────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────── */
+@media (max-width: 1024px) { .pricing-grid { grid-template-columns: 1fr; max-width: 440px; } .pricing-card.popular { transform: none; } }
+@media (max-width: 768px) {
+  #nav { padding: 0 18px; } .nav-links { display: none; }
+  .section { padding: 60px 20px; }
+  .cat-grid { grid-template-columns: repeat(3,1fr); }
+  .listings-grid, .revenue-grid, .vendors-grid { grid-template-columns: 1fr; }
+  .how-grid { grid-template-columns: 1fr; }
+  .trends-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+  .footer-bottom { flex-direction: column; }
+  .newsletter-band { padding: 60px 20px; }
+  footer { padding: 60px 20px 32px; }
+  .nl-form { flex-direction: column; }
+  .hero-stats { flex-wrap: wrap; gap: 16px; }
+  .hero-stat { border-right: none; }
+  .hf-1, .hf-2, .hf-3 { display: none; }
+  .revenue-summary { flex-direction: column; padding: 30px 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<!-- Toast -->
+<div class="toast" id="toast"><span>✓</span><span id="toast-msg">done</span></div>
+
+<!-- ════════════════ NAV ════════════════ -->
+<nav id="nav">
+  <a class="nav-logo" onclick="scrollTo_('#hero')">☕ <span>Cafe</span>Seeders</a>
+  <ul class="nav-links">
+    <li><a onclick="scrollTo_('#marketplace')">Marketplace</a></li>
+    <li><a onclick="scrollTo_('#how-it-works')">Startup Guide</a></li>
+    <li><a onclick="scrollTo_('#trends')">Trends</a></li>
+    <li><a onclick="scrollTo_('#vendors')">Vendors</a></li>
+    <li><a onclick="scrollTo_('#pricing')">Advertise</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn btn-ghost" onclick="openModal('modal-login')">Log In</button>
+    <button class="btn btn-primary" onclick="openModal('modal-list')">List My Cafe</button>
+  </div>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-float hf-1">
+    <div class="hf-label">Active Listings</div>
+    <div class="hf-value">128 🏪</div>
+    <div class="hf-delta"><span class="hf-up">↑</span> 12 new this week</div>
+  </div>
+  <div class="hero-float hf-2">
+    <div class="hf-label">Monthly Revenue</div>
+    <div class="hf-value">$18,400</div>
+    <div class="hf-delta"><span class="hf-up">↑</span> 24% vs last month</div>
+  </div>
+  <div class="hero-float hf-3">
+    <div class="hf-label">Today's Inquiries</div>
+    <div class="hf-value">47 💬</div>
+    <div class="hf-delta"><span class="hf-up">↑</span> avg 2.1h response</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span>SoCal's #1 Cafe Marketplace</div>
+    <h1 class="hero-h1">
+      Seed Your Cafe <em>Dream.</em>
+      <span class="sub">Grow. Then Harvest.</span>
+    </h1>
+    <p class="hero-desc">남가주 카페 매물 탐색부터 창업 정보, 트렌드까지<br>CafeSeeders가 함께합니다.</p>
+
+    <div class="hero-search">
+      <select class="hs-select" id="search-cat">
+        <option value="">All</option>
+        <option>For Sale</option>
+        <option>Startup Guide</option>
+        <option>Vendor</option>
+      </select>
+      <input class="hs-input" type="text" placeholder="Search cafes, cities, guides…" id="search-q">
+      <button class="hs-btn" onclick="doSearch()">Search →</button>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="hs-num"><span class="count-up" data-target="128">0</span>+</span><span class="hs-lbl">Active Listings</span></div>
+      <div class="hero-stat"><span class="hs-num"><span class="count-up" data-target="80">0</span>+</span><span class="hs-lbl">Verified Vendors</span></div>
+      <div class="hero-stat"><span class="hs-num"><span class="count-up" data-target="500">0</span>+</span><span class="hs-lbl">Articles & Recipes</span></div>
+      <div class="hero-stat"><span class="hs-num"><span class="count-up" data-target="70">0</span>+</span><span class="hs-lbl">Participating Cafes</span></div>
+    </div>
+  </div>
+
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,42 C400,80 1040,4 1440,42 L1440,80 L0,80 Z" fill="#F6F8FC"/>
+    </svg>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="hero-scroll-line"></div></div>
+</section>
+
+<!-- ════════════════ CATEGORIES ════════════════ -->
+<section class="section section-bg-gray">
+  <div class="section-wrap">
+    <div class="reveal"><div class="eyebrow-tag">What are you looking for?</div><h2 class="section-h2">Everything Your Cafe Journey Needs</h2><p class="section-desc">바이어, 셀러, 창업자 모두를 위한 원스톱 플랫폼</p></div>
+    <div class="cat-grid">
+      <div class="cat-card reveal d1" onclick="scrollTo_('#marketplace')"><span class="cat-icon">🏪</span><div class="cat-name">Buy a Cafe</div><div class="cat-sub">Browse 120+ listings</div></div>
+      <div class="cat-card reveal d2" onclick="openModal('modal-list')"><span class="cat-icon">💰</span><div class="cat-name">Sell My Cafe</div><div class="cat-sub">List in minutes</div></div>
+      <div class="cat-card reveal d3" onclick="scrollTo_('#how-it-works')"><span class="cat-icon">🌱</span><div class="cat-name">Start a Cafe</div><div class="cat-sub">Startup guide</div></div>
+      <div class="cat-card reveal d4" onclick="scrollTo_('#trends')"><span class="cat-icon">☕</span><div class="cat-name">Recipes & Trends</div><div class="cat-sub">Latest insights</div></div>
+      <div class="cat-card reveal d5" onclick="scrollTo_('#vendors')"><span class="cat-icon">🏢</span><div class="cat-name">Find Vendors</div><div class="cat-sub">Equipment & more</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ MARKETPLACE ════════════════ -->
+<section id="marketplace" class="section section-bg-white">
+  <div class="section-wrap">
+    <div class="reveal centered"><div class="eyebrow-tag">Featured Listings</div><h2 class="section-h2">SoCal's Best Cafe Opportunities</h2><p class="section-desc">프리미엄 검증 매물 · 실시간 업데이트</p></div>
+    <div class="filter-row reveal">
+      <button class="chip active" onclick="filterListings(this,'all')">All Regions</button>
+      <button class="chip" onclick="filterListings(this,'la')">Los Angeles</button>
+      <button class="chip" onclick="filterListings(this,'oc')">Orange County</button>
+      <button class="chip" onclick="filterListings(this,'sd')">San Diego</button>
+      <button class="chip" onclick="filterListings(this,'ie')">Inland Empire</button>
+    </div>
+    <div class="listings-grid" id="listings-grid">
+      <div class="listing-card reveal d1" data-region="la" onclick="openListingModal('Modern Specialty Cafe — Koreatown','Los Angeles','$185,000','$28k/mo','5yr Lease','900 sq ft','☕')">
+        <div class="listing-img" style="background:linear-gradient(135deg,#E8F0FF,#C0D4F8)">☕<span class="listing-badge badge-premium">Premium</span></div>
+        <div class="listing-body"><div class="listing-title">Modern Specialty Cafe — Koreatown</div><div class="listing-loc">📍 Los Angeles · 900 sq ft</div><div class="listing-price">$185,000</div><div class="listing-tags"><span class="listing-tag">$28k/mo</span><span class="listing-tag">5yr Lease</span><span class="listing-tag">Turnkey</span></div></div>
+      </div>
+      <div class="listing-card reveal d2" data-region="oc" onclick="openListingModal('Boba & Coffee Hybrid — Irvine','Irvine, OC','$95,000','$14k/mo','Mall Location','650 sq ft','🧋')">
+        <div class="listing-img" style="background:linear-gradient(135deg,#E0F7F4,#B2EDE8)">🧋<span class="listing-badge badge-new">New</span></div>
+        <div class="listing-body"><div class="listing-title">Boba & Coffee Hybrid — Irvine</div><div class="listing-loc">📍 Irvine · 650 sq ft</div><div class="listing-price">$95,000</div><div class="listing-tags"><span class="listing-tag">$14k/mo</span><span class="listing-tag">Mall Location</span></div></div>
+      </div>
+      <div class="listing-card reveal d3" data-region="la" onclick="openListingModal('Organic Health Cafe — Santa Monica','Santa Monica','$260,000','$42k/mo','Prime Corner','1,200 sq ft','🌿')">
+        <div class="listing-img" style="background:linear-gradient(135deg,#E8F5EC,#C5E8CD)">🌿<span class="listing-badge badge-premium">Premium</span></div>
+        <div class="listing-body"><div class="listing-title">Organic Health Cafe — Santa Monica</div><div class="listing-loc">📍 Santa Monica · 1,200 sq ft</div><div class="listing-price">$260,000</div><div class="listing-tags"><span class="listing-tag">$42k/mo</span><span class="listing-tag">Prime Corner</span></div></div>
+      </div>
+      <div class="listing-card reveal d1" data-region="la" onclick="openListingModal('Artisan Coffee Bar — DTLA','DTLA','$220,000','$32k/mo','5yr Lease','800 sq ft','🎨')">
+        <div class="listing-img" style="background:linear-gradient(135deg,#FEF9EE,#FDE68A)">🎨<span class="listing-badge badge-feat">Featured</span></div>
+        <div class="listing-body"><div class="listing-title">Artisan Coffee Bar — DTLA</div><div class="listing-loc">📍 DTLA · 800 sq ft</div><div class="listing-price">$220,000</div><div class="listing-tags"><span class="listing-tag">$32k/mo</span><span class="listing-tag">5yr Lease</span></div></div>
+      </div>
+      <div class="listing-card reveal d2" data-region="oc" onclick="openListingModal('Korean Cafe — Garden Grove','Garden Grove, OC','$168,000','$25k/mo','Loyal Clientele','950 sq ft','🍵')">
+        <div class="listing-img" style="background:linear-gradient(135deg,#F3E8FF,#E0C8F8)">🍵<span class="listing-badge badge-premium">Premium</span></div>
+        <div class="listing-body"><div class="listing-title">Korean Cafe — Garden Grove</div><div class="listing-loc">📍 Garden Grove · 950 sq ft</div><div class="listing-price">$168,000</div><div class="listing-tags"><span class="listing-tag">$25k/mo</span><span class="listing-tag">Loyal Clientele</span></div></div>
+      </div>
+      <div class="listing-card reveal d3" data-region="la" onclick="openListingModal('Breakfast Cafe — Pasadena','Pasadena','$145,000','$19k/mo','Turnkey','1,100 sq ft','🍳')">
+        <div class="listing-img" style="background:linear-gradient(135deg,#E0EEFF,#C0D8FF)">🍳<span class="listing-badge badge-new">New</span></div>
+        <div class="listing-body"><div class="listing-title">Breakfast Cafe — Pasadena</div><div class="listing-loc">📍 Pasadena · 1,100 sq ft</div><div class="listing-price">$145,000</div><div class="listing-tags"><span class="listing-tag">$19k/mo</span><span class="listing-tag">Turnkey</span></div></div>
+      </div>
+    </div>
+    <button class="view-all-btn reveal" onclick="showToast('전체 128개 매물을 보려면 회원가입이 필요합니다 ☕')">View All Listings →</button>
+  </div>
+</section>
+
+<!-- ════════════════ HOW IT WORKS ════════════════ -->
+<section id="how-it-works" class="section section-bg-gray">
+  <div class="section-wrap how-grid">
+    <div class="how-visual reveal">
+      <div class="how-visual-orb"></div>
+      <div class="how-visual-inner">
+        <span class="how-visual-icon" id="step-icon">🌱</span>
+        <div class="how-visual-title" id="step-title">Seed Your Dream</div>
+        <div class="how-visual-sub" id="step-sub">시작은 여기서</div>
+      </div>
+    </div>
+    <div>
+      <div class="reveal"><div class="eyebrow-tag">How It Works</div><h2 class="section-h2">카페 오너의 여정,<br>처음부터 끝까지</h2><p class="section-desc">CafeSeeders가 모든 단계를 함께합니다</p></div>
+      <div class="step-list reveal">
+        <div class="step-item active" onclick="setStep(this,'🔍','Market Research','지역 분석 · 경쟁사 파악 · 입지 선정')"><div class="step-num">1</div><div><div class="step-text-title">시장 조사 · 지역 분석</div><div class="step-text-desc">지역 상권 분석과 경쟁사 파악으로 최적의 입지를 선정합니다</div></div></div>
+        <div class="step-item" onclick="setStep(this,'📋','Business Plan','예산 계획 · 수익 시뮬레이션')"><div class="step-num">2</div><div><div class="step-text-title">비즈니스 플랜 · 예산 계획</div><div class="step-text-desc">현실적인 예산과 수익 모델로 성공 가능성을 높입니다</div></div></div>
+        <div class="step-item" onclick="setStep(this,'🏪','Find the Right Cafe','매물 탐색 · 실사 · 협상')"><div class="step-num">3</div><div><div class="step-text-title">매물 탐색 & 인수 협상</div><div class="step-text-desc">120개 이상의 검증된 매물 중 최적의 카페를 찾아드립니다</div></div></div>
+        <div class="step-item" onclick="setStep(this,'📜','Permits & Legal','법인 · Health Permit · 계약')"><div class="step-num">4</div><div><div class="step-text-title">법인 · 퍼밋 · 계약</div><div class="step-text-desc">DRE 라이선스 에이전트가 법적 절차를 안내합니다</div></div></div>
+        <div class="step-item" onclick="setStep(this,'☕','Grand Opening!','오픈 · 마케팅 · 운영 시작')"><div class="step-num">5</div><div><div class="step-text-title">그랜드 오픈 & 운영</div><div class="step-text-desc">SNS 마케팅부터 벤더 연결까지 오픈 후에도 함께합니다</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ REVENUE ════════════════ -->
+<section class="section section-bg-white">
+  <div class="section-wrap">
+    <div class="reveal centered"><div class="eyebrow-tag">Revenue Model</div><h2 class="section-h2">다각화된 수익 구조</h2><p class="section-desc">플랫폼 성장과 함께 자동으로 확장되는 수익 모델</p></div>
+    <div class="revenue-grid">
+      <div class="revenue-card reveal d1" onclick="showToast('리스팅 수익: $49–$149/mo · 현재 120+ 매물')"><span class="rev-icon">🏪</span><div class="rev-title">Listing Fees</div><div class="rev-desc">카페 셀러의 매물 등록 수수료. 무료 30일 체험 후 프리미엄 전환</div><div class="rev-amount">$49–$149 <span>/mo</span></div></div>
+      <div class="revenue-card reveal d2" onclick="showToast('히어로 배너 $1,200/월 · 사이드바 $800/월')"><span class="rev-icon">📣</span><div class="rev-title">Advertising</div><div class="rev-desc">장비·금융·POS 업체를 위한 타겟 광고 존. 5개 프리미엄 위치</div><div class="rev-amount">$300–$1,200 <span>/mo</span></div></div>
+      <div class="revenue-card reveal d3" onclick="showToast('벤더 Basic 무료 → Premium $29–$99/월')"><span class="rev-icon">🏢</span><div class="rev-title">Vendor Directory</div><div class="rev-desc">SoCal 카페 전문 업체의 프리미엄 디렉토리 등록 및 노출</div><div class="rev-amount">$29–$99 <span>/mo</span></div></div>
+      <div class="revenue-card reveal d1" onclick="showToast('스폰서 아티클 $400/편 · 뉴스레터 $300/회')"><span class="rev-icon">✍️</span><div class="rev-title">Sponsored Content</div><div class="rev-desc">스폰서 아티클 & 뉴스레터 광고. 콘텐츠 마케팅 최적 포맷</div><div class="rev-amount">$300–$400 <span>/piece</span></div></div>
+      <div class="revenue-card reveal d2" onclick="showToast('부동산 중개 수수료. DRE# 02217090')"><span class="rev-icon">🏡</span><div class="rev-title">Brokerage Commission</div><div class="rev-desc">카페 매매 중개 수수료. CA DRE 라이선스 보유 에이전트 직접 운영</div><div class="rev-amount">3–6% <span>of deal</span></div></div>
+      <div class="revenue-card reveal d3" onclick="showToast('보험·연금·IRA. Insurance Lic# 4349201')"><span class="rev-icon">🛡️</span><div class="rev-title">Insurance & IRA</div><div class="rev-desc">카페 오너를 위한 생명보험·연금·SEP-IRA 플랜 연계 수익</div><div class="rev-amount">Referral <span>commission</span></div></div>
+    </div>
+    <div class="revenue-summary reveal">
+      <div>
+        <div class="rs-label">Projected Monthly Revenue (Year 1)</div>
+        <div class="rs-number">$15,000+</div>
+        <div class="rs-sub">플랫폼 성장에 따라 자동 확장</div>
+      </div>
+      <div class="rs-note">복합 수익 구조로 플랫폼 성장과 함께 자동 확장됩니다. 초기 파트너십으로 빠른 트래픽 확보 가능.</div>
+      <button class="btn btn-white" style="padding:14px 28px;font-size:.9rem" onclick="openModal('modal-contact')">투자 문의하기 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ TRENDS ════════════════ -->
+<section id="trends" class="section section-bg-gray">
+  <div class="section-wrap">
+    <div class="reveal"><div class="eyebrow-tag">Trending Now</div><h2 class="section-h2">SoCal Cafe Intelligence</h2><p class="section-desc">최신 트렌드 · 검증된 레시피 · 업계 인사이트</p></div>
+    <div class="trends-grid">
+      <div class="trend-card featured reveal" onclick="openTrendModal('🍵','FEATURED · SUMMER 2025','Matcha Everything: Why Green is SoCal\'s Color of Summer','From matcha lemonade to matcha horchata — LA cafes can\'t get enough. Here\'s how to add it to your menu and maximize summer revenue.')">
+        <div class="trend-img" style="height:272px;background:linear-gradient(135deg,#D4F0E8,#A8E4D0)">🍵</div>
+        <div class="trend-body"><span class="trend-cat" style="color:var(--teal)">✦ FEATURED</span><div class="trend-title">Matcha Everything: Why Green is SoCal's Color of Summer</div><div class="trend-meta"><span>5 min read</span><span>6.2k views</span></div></div>
+      </div>
+      <div class="trend-card reveal d1" onclick="openTrendModal('🧃','RECIPE','Brown Sugar Tiger Oat Milk Latte','A customer favorite boosting ticket averages at LA cafes. Step-by-step recipe included.')">
+        <div class="trend-img" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A)">🧃</div>
+        <div class="trend-body"><span class="trend-cat" style="color:var(--amber)">☕ RECIPE</span><div class="trend-title">Brown Sugar Tiger Oat Milk Latte</div><div class="trend-meta"><span>4 min</span><span>3.1k views</span></div></div>
+      </div>
+      <div class="trend-card reveal d2" onclick="openTrendModal('📊','TREND REPORT','2025 SoCal Cafe Trend Report','Full market analysis: top-performing cafe types, pricing trends, and investment outlook.')">
+        <div class="trend-img" style="background:linear-gradient(135deg,#EBF4FF,#C0D8FF)">📊</div>
+        <div class="trend-body"><span class="trend-cat" style="color:var(--blue-600)">📈 TREND</span><div class="trend-title">2025 SoCal Cafe Trend Report</div><div class="trend-meta"><span>8 min</span><span>4.1k views</span></div></div>
+      </div>
+      <div class="trend-card reveal d3" onclick="openTrendModal('🌿','RECIPE','Butterfly Pea Color-Changing Lemonade','The viral drink driving Instagram traffic. Full recipe and presentation tips.')">
+        <div class="trend-img" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)">🌿</div>
+        <div class="trend-body"><span class="trend-cat" style="color:#7C3AED">🍹 RECIPE</span><div class="trend-title">Butterfly Pea Color-Changing Lemonade</div><div class="trend-meta"><span>3 min</span><span>2.8k views</span></div></div>
+      </div>
+      <div class="trend-card reveal d4" onclick="openTrendModal('📱','MARKETING','Instagram Strategy for LA Cafes 2025','Proven tactics for growing your cafe\'s social media and converting followers into loyal customers.')">
+        <div class="trend-img" style="background:linear-gradient(135deg,#FEE2E2,#FECACA)">📱</div>
+        <div class="trend-body"><span class="trend-cat" style="color:var(--red)">📱 MARKETING</span><div class="trend-title">Instagram Strategy for LA Cafes 2025</div><div class="trend-meta"><span>7 min</span><span>3.2k views</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ VENDORS ════════════════ -->
+<section id="vendors" class="section section-bg-white">
+  <div class="section-wrap">
+    <div class="reveal centered"><div class="eyebrow-tag">Vendor Directory</div><h2 class="section-h2">80+ Verified SoCal Partners</h2><p class="section-desc">검증된 카페 전문 업체와 직접 연결</p></div>
+    <div class="vendors-grid">
+      <div class="vendor-card premium reveal d1" onclick="openVendorModal('La Marzocco — SoCal','☕ Equipment','Official La Marzocco distributor for SoCal. Exclusive pricing for CafeSeeders partners.','★★★★★ (48 reviews)')"><div class="vendor-badge">⭐ Premium</div><span class="vendor-icon">☕</span><div class="vendor-name">La Marzocco — SoCal</div><div class="vendor-cat">Equipment · Espresso</div><div class="vendor-stars">★★★★★ <span style="color:var(--gray-400);font-size:.72rem">(48)</span></div></div>
+      <div class="vendor-card premium reveal d2" onclick="openVendorModal('Toast POS','💻 POS / Tech','Cloud POS built for cafes. Free setup for CafeSeeders partners.','★★★★☆ (32 reviews)')"><div class="vendor-badge">⭐ Premium</div><span class="vendor-icon">💻</span><div class="vendor-name">Toast POS</div><div class="vendor-cat">POS / Tech</div><div class="vendor-stars">★★★★☆ <span style="color:var(--gray-400);font-size:.72rem">(32)</span></div></div>
+      <div class="vendor-card reveal d3" onclick="openVendorModal('SoCal Cafe Design Studio','🎨 Interior','Interior design & renovation packages from $15k.','★★★★★ (19 reviews)')"><span class="vendor-icon">🎨</span><div class="vendor-name">SoCal Cafe Design Studio</div><div class="vendor-cat">Interior / Remodeling</div><div class="vendor-stars">★★★★★ <span style="color:var(--gray-400);font-size:.72rem">(19)</span></div></div>
+      <div class="vendor-card reveal d4" onclick="openVendorModal('Cafe Social Media Co.','📱 Marketing','IG & TikTok management. Avg 40% follower growth in 90 days.','★★★★☆ (27 reviews)')"><span class="vendor-icon">📱</span><div class="vendor-name">Cafe Social Media Co.</div><div class="vendor-cat">Marketing & Social</div><div class="vendor-stars">★★★★☆ <span style="color:var(--gray-400);font-size:.72rem">(27)</span></div></div>
+      <div class="vendor-card reveal d1" onclick="openVendorModal('BrewStaff — Barista Hiring','👥 Staffing','Pre-screened baristas, supervisors, and managers in SoCal.','★★★★★ (15 reviews)')"><span class="vendor-icon">👥</span><div class="vendor-name">BrewStaff</div><div class="vendor-cat">Staffing & HR</div><div class="vendor-stars">★★★★★ <span style="color:var(--gray-400);font-size:.72rem">(15)</span></div></div>
+      <div class="vendor-card reveal d2" onclick="openVendorModal('Kim & Associates CPA','⚖️ Legal/CPA','Accounting & tax for Korean-American cafe owners. 20+ years.','★★★★★ (41 reviews)')"><span class="vendor-icon">⚖️</span><div class="vendor-name">Kim & Associates CPA</div><div class="vendor-cat">Legal / CPA</div><div class="vendor-stars">★★★★★ <span style="color:var(--gray-400);font-size:.72rem">(41)</span></div></div>
+      <div class="vendor-card reveal d3" onclick="openVendorModal('SBA Loan Center — SoCal','🏦 Finance','SBA loans up to $500k. Fast approval for cafe purchases.','★★★★☆ (23 reviews)')"><span class="vendor-icon">🏦</span><div class="vendor-name">SBA Loan Center — SoCal</div><div class="vendor-cat">Finance / Lending</div><div class="vendor-stars">★★★★☆ <span style="color:var(--gray-400);font-size:.72rem">(23)</span></div></div>
+      <div class="vendor-card reveal d4" onclick="openModal('modal-vendor-reg')" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:150px"><span class="vendor-icon">➕</span><div class="vendor-name" style="color:var(--gray-400)">Register Your Business</div><div class="vendor-cat">Free · Premium $29–$99/mo</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PRICING ════════════════ -->
+<section id="pricing" class="section section-bg-gray">
+  <div class="section-wrap">
+    <div class="reveal centered"><div class="eyebrow-tag">Advertise With Us</div><h2 class="section-h2">Reach 10,000+ SoCal Cafe Owners</h2><p class="section-desc">남가주 카페 오너·창업 예정자에게 직접 홍보하세요</p></div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal d1" onclick="openAdModal('Starter','$299',['벤더 디렉토리 기본 등록','아티클 사이드바 300×250','월 노출 5,000회'])">
+        <div class="pricing-tier">Starter</div>
+        <div class="pricing-amount">$299</div>
+        <div class="pricing-period">per month</div>
+        <ul class="pricing-features"><li><span class="pf-check">✓</span>벤더 디렉토리 기본 등록</li><li><span class="pf-check">✓</span>아티클 사이드바 300×250</li><li><span class="pf-check">✓</span>월 노출 5,000회</li></ul>
+        <button class="pricing-btn pricing-btn-outline">Get Started</button>
+      </div>
+      <div class="pricing-card popular reveal d2" onclick="openAdModal('Growth','$799',['마켓플레이스 사이드바','스폰서 아티클 1편/월','뉴스레터 로고 노출','월 노출 20,000회'])">
+        <div class="popular-badge">Most Popular</div>
+        <div class="pricing-tier">Growth</div>
+        <div class="pricing-amount">$799</div>
+        <div class="pricing-period">per month</div>
+        <ul class="pricing-features"><li><span class="pf-check">✓</span>마켓플레이스 사이드바</li><li><span class="pf-check">✓</span>스폰서 아티클 1편/월</li><li><span class="pf-check">✓</span>뉴스레터 로고 노출</li><li><span class="pf-check">✓</span>월 노출 20,000회</li></ul>
+        <button class="pricing-btn">Get Started</button>
+      </div>
+      <div class="pricing-card reveal d3" onclick="openModal('modal-contact')">
+        <div class="pricing-tier">Premium</div>
+        <div class="pricing-amount">$1,499</div>
+        <div class="pricing-period">per month</div>
+        <ul class="pricing-features"><li><span class="pf-check">✓</span>홈 히어로 728×90 배너</li><li><span class="pf-check">✓</span>스폰서 아티클 2편/월</li><li><span class="pf-check">✓</span>뉴스레터 배너 광고</li><li><span class="pf-check">✓</span>담당자 전담 관리</li><li><span class="pf-check">✓</span>월 노출 50,000회</li></ul>
+        <button class="pricing-btn" onclick="event.stopPropagation();openModal('modal-contact')">Contact Us</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ NEWSLETTER ════════════════ -->
+<div class="newsletter-band">
+  <div class="reveal">
+    <h2 class="nl-title">Stay Ahead of the Curve ☕</h2>
+    <p class="nl-sub">매주 최신 매물·트렌드·벤더 소식을 받아보세요</p>
+    <div class="nl-form">
+      <input class="nl-input" type="email" id="nl-email" placeholder="your@email.com">
+      <button class="nl-submit" onclick="doNewsletter()">구독하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">☕ <span>Cafe</span>Seeders</div>
+      <p class="footer-brand-desc">Southern California's premier platform for cafe buying, selling, and growing. La Mirada, CA</p>
+      <div class="footer-lic-badges"><div class="lic-badge">CA DRE# 02217090</div><div class="lic-badge">Ins Lic# 4349201</div></div>
+    </div>
+    <div><div class="footer-col-title">Marketplace</div><ul class="footer-links"><li><a onclick="scrollTo_('#marketplace')">Buy a Cafe</a></li><li><a onclick="openModal('modal-list')">Sell My Cafe</a></li><li><a onclick="scrollTo_('#marketplace')">Premium Listings</a></li><li><a onclick="openModal('modal-list')">Free Listing</a></li></ul></div>
+    <div><div class="footer-col-title">Resources</div><ul class="footer-links"><li><a onclick="scrollTo_('#how-it-works')">Startup Guide</a></li><li><a onclick="scrollTo_('#trends')">Recipes & Trends</a></li><li><a onclick="scrollTo_('#vendors')">Vendor Directory</a></li><li><a>Newsletter</a></li></ul></div>
+    <div><div class="footer-col-title">Company</div><ul class="footer-links"><li><a onclick="showToast('About — 준비 중!')">About CafeSeeders</a></li><li><a onclick="scrollTo_('#pricing')">Advertise</a></li><li><a onclick="openModal('modal-contact')">Contact</a></li><li><a onclick="showToast('Privacy Policy')">Privacy Policy</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 CafeSeeders · cafeseeders.com · La Mirada, CA — All rights reserved.<br>CafeSeeders.com provides business brokerage and real estate referral services through a California-licensed real estate agent (DRE# 02217090). Insurance product referrals are provided under Insurance License# 4349201. All content is for informational purposes only and does not constitute legal or financial advice.</div>
+    <div class="footer-agent"><div class="footer-agent-name">Kwangjei Cho</div><div class="footer-agent-lic">CA DRE# 02217090 · Ins Lic# 4349201</div></div>
+  </div>
+</footer>
+
+<!-- ════════════════ MODALS ════════════════ -->
+<!-- Login -->
+<div class="overlay" id="modal-login" onclick="overlayClose(event,'modal-login')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-login')">✕</button>
+    <span class="modal-icon">☕</span>
+    <div class="modal-title">Welcome Back</div>
+    <div class="modal-sub">CafeSeeders 계정으로 로그인하세요</div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••"></div>
+    <button class="form-submit" onclick="closeModal('modal-login');showToast('✓ 로그인 성공! Welcome back ☕')">Log In</button>
+    <div class="modal-divider">계정이 없으신가요? <a style="color:var(--blue-600);cursor:pointer;font-weight:700" onclick="closeModal('modal-login');openModal('modal-signup')">Sign Up →</a></div>
+  </div>
+</div>
+
+<!-- Signup -->
+<div class="overlay" id="modal-signup" onclick="overlayClose(event,'modal-signup')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-signup')">✕</button>
+    <span class="modal-icon">🌱</span>
+    <div class="modal-title">Join CafeSeeders</div>
+    <div class="modal-sub">무료로 가입하고 남가주 최대 카페 마켓플레이스를 이용하세요</div>
+    <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" type="text" placeholder="홍길동"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+    <div class="form-group"><label class="form-label">I am a…</label><select class="form-select"><option>Buyer</option><option>Seller</option><option>Startup</option><option>Vendor</option></select></div>
+    <button class="form-submit" onclick="closeModal('modal-signup');showToast('🌱 CafeSeeders에 가입하셨습니다!')">Create Free Account</button>
+  </div>
+</div>
+
+<!-- List My Cafe -->
+<div class="overlay" id="modal-list" onclick="overlayClose(event,'modal-list')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-list')">✕</button>
+    <span class="modal-icon">🏪</span>
+    <div class="modal-title">List Your Cafe</div>
+    <div class="modal-sub">내 카페를 수천 명의 잠재 바이어에게 노출시키세요</div>
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab(this,'tab-basic')">Basic Info</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-fin')">Financials</button>
+      <button class="tab-btn" onclick="switchTab(this,'tab-plan')">Plan</button>
+    </div>
+    <div id="tab-basic">
+      <div class="form-group"><label class="form-label">Cafe Name *</label><input class="form-input" type="text" placeholder="My Coffee House"></div>
+      <div class="form-group"><label class="form-label">Type *</label><select class="form-select"><option>Specialty Coffee</option><option>Boba / Bubble Tea</option><option>Breakfast Cafe</option><option>Korean Cafe</option></select></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">City *</label><input class="form-input" placeholder="Los Angeles"></div><div class="form-group"><label class="form-label">Zip</label><input class="form-input" placeholder="90001"></div></div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="카페 특징, 강점, 인수 포인트…"></textarea></div>
+    </div>
+    <div id="tab-fin" style="display:none">
+      <div class="form-row"><div class="form-group"><label class="form-label">Asking Price *</label><input class="form-input" placeholder="$150,000"></div><div class="form-group"><label class="form-label">Monthly Revenue</label><input class="form-input" placeholder="$20,000"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Monthly Rent</label><input class="form-input" placeholder="$3,500"></div><div class="form-group"><label class="form-label">Lease Remaining</label><input class="form-input" placeholder="3 years"></div></div>
+    </div>
+    <div id="tab-plan" style="display:none">
+      <div class="plan-option selected" onclick="selectPlan(this)"><div class="plan-option-title">Free — 30 days</div><div class="plan-option-desc">기본 리스팅 · 사진 5장</div></div>
+      <div class="plan-option" onclick="selectPlan(this)"><div class="plan-option-title">Premium — $49/mo ⭐</div><div class="plan-option-desc">사진 15장 · 피처드 노출 · 검색 우선 노출</div></div>
+      <div class="plan-option" onclick="selectPlan(this)"><div class="plan-option-title">Elite — $149/mo</div><div class="plan-option-desc">홈 피처드 · 전담 에이전트 · 우선 협상 지원</div></div>
+    </div>
+    <button class="form-submit" onclick="listingNext()">다음 단계 →</button>
+  </div>
+</div>
+
+<!-- Listing Detail -->
+<div class="overlay" id="modal-listing" onclick="overlayClose(event,'modal-listing')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-listing')">✕</button>
+    <span class="modal-icon" id="ld-icon">☕</span>
+    <div class="modal-title" id="ld-title">Cafe</div>
+    <div class="modal-sub" id="ld-loc">📍 Location</div>
+    <div class="listing-detail-grid">
+      <div class="ld-item"><div class="ld-label">Asking Price</div><div class="ld-value" id="ld-price">—</div></div>
+      <div class="ld-item"><div class="ld-label">Monthly Revenue</div><div class="ld-value" id="ld-rev">—</div></div>
+      <div class="ld-item"><div class="ld-label">Key Feature</div><div class="ld-value" id="ld-feat">—</div></div>
+      <div class="ld-item"><div class="ld-label">Square Footage</div><div class="ld-value" id="ld-sqft">—</div></div>
+    </div>
+    <div class="info-box">관심 있으신 매물이신가요? 문의를 보내면 셀러가 직접 연락드립니다.</div>
+    <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" type="text" placeholder="홍길동"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+    <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="이 매물에 대해 더 알고 싶습니다…"></textarea></div>
+    <button class="form-submit" onclick="closeModal('modal-listing');showToast('✓ 셀러에게 문의가 전송되었습니다!')">🔒 셀러에게 문의 보내기</button>
+  </div>
+</div>
+
+<!-- Trend -->
+<div class="overlay" id="modal-trend" onclick="overlayClose(event,'modal-trend')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-trend')">✕</button>
+    <span class="modal-icon" id="tm-icon">📝</span>
+    <div style="font-size:var(--fs-xs);font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--blue-600);margin-bottom:8px" id="tm-cat">TREND</div>
+    <div class="modal-title" id="tm-title">Title</div>
+    <div class="modal-sub" id="tm-body">Body</div>
+    <div class="info-box" style="background:var(--teal-lt)">☕ 전체 아티클은 회원 가입 후 무료로 열람 가능합니다.</div>
+    <button class="form-submit" onclick="closeModal('modal-trend');showToast('전체 아티클을 읽으려면 회원가입이 필요합니다 ☕')">전체 아티클 읽기 →</button>
+  </div>
+</div>
+
+<!-- Vendor -->
+<div class="overlay" id="modal-vendor" onclick="overlayClose(event,'modal-vendor')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-vendor')">✕</button>
+    <div class="modal-title" id="vm-name">Vendor</div>
+    <div style="font-size:var(--fs-sm);font-weight:700;color:var(--teal);margin-bottom:8px" id="vm-cat">Cat</div>
+    <div class="modal-sub" id="vm-desc">Desc</div>
+    <div style="color:var(--gray-500);font-size:var(--fs-sm);margin-bottom:20px" id="vm-rating">Rating</div>
+    <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" placeholder="홍길동"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+    <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="문의 내용…"></textarea></div>
+    <button class="form-submit" onclick="closeModal('modal-vendor');showToast('✓ 업체 문의가 전송되었습니다!')">업체에 문의하기</button>
+  </div>
+</div>
+
+<!-- Vendor Register -->
+<div class="overlay" id="modal-vendor-reg" onclick="overlayClose(event,'modal-vendor-reg')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-vendor-reg')">✕</button>
+    <span class="modal-icon">🏢</span>
+    <div class="modal-title">Register Your Business</div>
+    <div class="modal-sub">CafeSeeders 벤더 디렉토리에 등록하세요</div>
+    <div class="form-group"><label class="form-label">Company Name *</label><input class="form-input" placeholder="My Business Co."></div>
+    <div class="form-group"><label class="form-label">Category *</label><select class="form-select"><option>Equipment</option><option>Interior</option><option>POS</option><option>Marketing</option><option>Staffing</option><option>Legal/CPA</option><option>Finance</option></select></div>
+    <div class="form-group"><label class="form-label">Email *</label><input class="form-input" type="email" placeholder="contact@mybusiness.com"></div>
+    <div class="form-group"><label class="form-label">Plan</label><select class="form-select"><option>Basic (Free)</option><option>Premium — $29/mo</option><option>Elite — $99/mo</option></select></div>
+    <button class="form-submit" onclick="closeModal('modal-vendor-reg');showToast('🏢 벤더 등록 신청 완료!')">등록 신청하기</button>
+  </div>
+</div>
+
+<!-- Ad -->
+<div class="overlay" id="modal-ad" onclick="overlayClose(event,'modal-ad')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-ad')">✕</button>
+    <span class="modal-icon">📣</span>
+    <div class="modal-title" id="ad-title">Ad Inquiry</div>
+    <div id="ad-features" class="info-box"></div>
+    <div class="form-group"><label class="form-label">Company Name</label><input class="form-input" placeholder="My Company"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@company.com"></div>
+    <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="광고 목표와 예산을 알려주세요…"></textarea></div>
+    <button class="form-submit" onclick="closeModal('modal-ad');showToast('📣 광고 문의가 접수되었습니다!')">광고 문의 보내기</button>
+  </div>
+</div>
+
+<!-- Contact -->
+<div class="overlay" id="modal-contact" onclick="overlayClose(event,'modal-contact')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-contact')">✕</button>
+    <span class="modal-icon">💼</span>
+    <div class="modal-title">투자 & 파트너십 문의</div>
+    <div class="modal-sub">CafeSeeders에 대한 투자 문의나 파트너십 제안을 보내주세요</div>
+    <div class="form-group"><label class="form-label">Name</label><input class="form-input" placeholder="홍길동"></div>
+    <div class="form-group"><label class="form-label">Organization</label><input class="form-input" placeholder="Company / VC / Angel"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com"></div>
+    <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="질문이나 제안을 작성해주세요…"></textarea></div>
+    <button class="form-submit" onclick="closeModal('modal-contact');showToast('💼 메시지가 전송되었습니다. 감사합니다!')">메시지 보내기</button>
+  </div>
+</div>
+
+<!-- ════════════════ SCRIPTS ════════════════ -->
+<script>
+/* — Cursor — */
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+document.addEventListener('mousemove', e => {
+  dot.style.left = e.clientX + 'px';  dot.style.top = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('button, a, .cat-card, .listing-card, .revenue-card, .trend-card, .vendor-card, .step-item, .pricing-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.transform = 'translate(-50%,-50%) scale(1.5)'; ring.style.opacity = '.3'; });
+  el.addEventListener('mouseleave', () => { ring.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '.5'; });
+});
+
+/* — Nav shrink on scroll — */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* — Scroll reveal — */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* — Count-up numbers — */
+const countObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.target;
+    let current = 0;
+    const step = Math.ceil(target / 50);
+    const timer = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current;
+      if (current >= target) clearInterval(timer);
+    }, 25);
+    countObserver.unobserve(el);
+  });
+}, { threshold: .5 });
+document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
+
+/* — Toast — */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* — Smooth scroll — */
+function scrollTo_(selector) {
+  const el = document.querySelector(selector);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* — Modals — */
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function overlayClose(e, id) { if (e.target.id === id) closeModal(id); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.overlay.open').forEach(el => { el.classList.remove('open'); document.body.style.overflow = ''; });
+});
+
+/* — Filter listings — */
+function filterListings(btn, region) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.listing-card').forEach(card => {
+    card.style.display = (region === 'all' || card.dataset.region === region) ? '' : 'none';
+  });
+}
+
+/* — How It Works steps — */
+function setStep(el, icon, title, sub) {
+  document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('step-icon').textContent = icon;
+  document.getElementById('step-title').textContent = title;
+  document.getElementById('step-sub').textContent = sub;
+}
+
+/* — Modal tab switching — */
+function switchTab(btn, tabId) {
+  btn.closest('.modal').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['tab-basic', 'tab-fin', 'tab-plan'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === tabId ? '' : 'none';
+  });
+}
+
+/* — Listing next step — */
+function listingNext() {
+  const tabs = [...document.querySelectorAll('#modal-list .tab-btn')];
+  const i = tabs.findIndex(t => t.classList.contains('active'));
+  const tabIds = ['tab-basic', 'tab-fin', 'tab-plan'];
+  if (i < tabs.length - 1) switchTab(tabs[i + 1], tabIds[i + 1]);
+  else { closeModal('modal-list'); showToast('🎉 매물이 등록되었습니다!'); }
+}
+
+/* — Plan selection — */
+function selectPlan(el) {
+  el.closest('.modal').querySelectorAll('.plan-option').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* — Open listing modal — */
+function openListingModal(title, loc, price, rev, feat, sqft, icon) {
+  document.getElementById('ld-title').textContent = title;
+  document.getElementById('ld-loc').textContent = '📍 ' + loc;
+  document.getElementById('ld-price').textContent = price;
+  document.getElementById('ld-rev').textContent = rev;
+  document.getElementById('ld-feat').textContent = feat;
+  document.getElementById('ld-sqft').textContent = sqft;
+  document.getElementById('ld-icon').textContent = icon;
+  openModal('modal-listing');
+}
+
+/* — Open trend modal — */
+function openTrendModal(icon, cat, title, body) {
+  document.getElementById('tm-icon').textContent = icon;
+  document.getElementById('tm-cat').textContent = cat;
+  document.getElementById('tm-title').textContent = title;
+  document.getElementById('tm-body').textContent = body;
+  openModal('modal-trend');
+}
+
+/* — Open vendor modal — */
+function openVendorModal(name, cat, desc, rating) {
+  document.getElementById('vm-name').textContent = name;
+  document.getElementById('vm-cat').textContent = cat;
+  document.getElementById('vm-desc').textContent = desc;
+  document.getElementById('vm-rating').textContent = rating;
+  openModal('modal-vendor');
+}
+
+/* — Open ad modal — */
+function openAdModal(tier, price, features) {
+  document.getElementById('ad-title').textContent = tier + ' Package — ' + price + '/mo';
+  document.getElementById('ad-features').innerHTML = features.map(f => '✓ ' + f).join('<br>');
+  openModal('modal-ad');
+}
+
+/* — Search — */
+function doSearch() {
+  const q = document.getElementById('search-q').value;
+  const cat = document.getElementById('search-cat').value;
+  if (q || cat) { showToast('🔍 "' + (cat || 'All') + ': ' + (q || '…') + '" 검색 중...'); scrollTo_('#marketplace'); }
+}
+document.getElementById('search-q').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+/* — Newsletter — */
+function doNewsletter() {
+  const email = document.getElementById('nl-email').value;
+  if (email) { showToast('✓ 구독 완료! 매주 CafeSeeders 인사이트를 받아보세요 ☕'); document.getElementById('nl-email').value = ''; }
+  else showToast('이메일 주소를 입력해주세요');
+}
+</script>
+</body>
+</html>
